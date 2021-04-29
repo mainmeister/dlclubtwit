@@ -9,10 +9,15 @@ There are three environment variables that the program depends on.
 `# set up configuration for the twit club downloader`
 
 `# twitcluburl - the url from the twit club for your shows`
+
 `export twitcluburl=https://twit.memberfulcontent.com/rss/9041?auth={your authorization here}`
+
 `# twitclubblocksize - the size of the block to read from the stream while downloading`
+
 `export twitclubblocksize=1048576`
+
 `# twitclubdestination - the location for the downloaded files`
+
 `export twitclubdestination=/home/mainmeister/kodi/kodi/twit.tv`
 
 The twitcluburl is the one you get from the club twit subscriber's Podcast page. This is a manditory setting. If this is missing then the program will abort with an appropriate error message "Set environment string twitcluburl to the url for your twitclub stream" and an exit code of 1.
