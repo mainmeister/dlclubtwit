@@ -2,7 +2,7 @@
 
 Download videos from a club twit subscription to watch them using kodi.
 
-##Installation
+#Installation
 
 There are three environment variables that the program depends on.
 
@@ -26,7 +26,7 @@ The twitclubblocksize sets the size of each data block requested from the server
 
 The twitclubdestination is the path on your file system where you want to put the downloaded files. If this is not set then the current working directory is used.
 
-##Requirements
+#Requirements
 
 Python3.6+
 
@@ -40,13 +40,13 @@ html2txt
 
 `git clone https://github.com/renesugar/html2txt.git`
 
-##Usage
+#Usage
 
 The program is a command line python script. There are no command line arguments.
 
 `$python main.py`
 
-##Output
+#Output
 
 (venv) mainmeister@william-optiplex7020:~/PycharmProjects/dltwit$ python main.py
 title: This Week in Google 609 Put Garlic On My Shopping List Wed, 28 Apr 2021 22:02:33 PDT
