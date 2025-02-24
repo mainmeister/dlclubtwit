@@ -1,3 +1,4 @@
+import argparse
 import os
 import pathlib
 import shutil
@@ -5,6 +6,12 @@ import xml.etree.ElementTree as ET
 import sqlite3
 import requests
 from html2txt import converters
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(description="Process command-line arguments.")
+    parser.add_argument("-s", "--skip", action="store_true", help="Skip already downloaded files.")
+    args = parser.parse_args()
+    return args
 
 
 class Data():
@@ -30,6 +37,13 @@ class Data():
 insert into file (filename)
 values (?);        """
         self.data.execute(sql_insert, (filename,))
+        self.data.commit()
+
+    def delfilename(self, filename):
+        sql_delete = """
+        delete from file where filename=?
+        """
+        self.data.execute(sql_delete, (filename,))
         self.data.commit()
 
 class Shows():
@@ -72,9 +86,32 @@ class Shows():
             newTitle = newTitle.replace(badCharacter, '')
         return newTitle
 
+def humanize_size(size_bytes):
+    """
+    Convert an integer size in bytes to a human-readable format.
+    """
+    if size_bytes == 0:
+        return "0 B"
+
+    # Define units
+    units = ["B", "KB", "MB", "GB", "TB", "PB"]
+    size_in_kb = size_bytes
+    unit_index = 0
+
+    # Divide by 1024 to find the right unit
+    while size_in_kb >= 1024 and unit_index < len(units) - 1:
+        size_in_kb /= 1024
+        unit_index += 1
+
+    # Format with f-string and only show 2 decimal places
+    return f"{size_in_kb:.2f} {units[unit_index]}"
 
 if __name__ == '__main__':
+    args = parse_arguments()
+    skip_downloaded = args.skip
+
     shows = Shows()
+    print(f'Club TWIT URL: {shows.url} \nDestination: {shows.twitclubdestination} \nBlocksize: {shows.blocksize} \n')
     twitclubblocksize = shows.blocksize
     for show in shows.shows():
         filename = shows.filename
@@ -85,17 +122,18 @@ if __name__ == '__main__':
             if not pathlib.Path(outputFilename).exists():
                 print(f'title: {shows.title} {shows.pubDate}')
                 print(f'descrition: {shows.description}')
-                print(f'url: {shows.url} length: {shows.urllength} type: {shows.urltype}')
+                print(f'url: {shows.url} length: {humanize_size(int(shows.urllength))} type: {shows.urltype}')
                 print(outputFilename)
                 request = requests.get(shows.url, stream=True)
                 requestSizeRead = 0
-                with open('twitclubdownload', 'wb') as fd:
-                    for chunk in request.iter_content(chunk_size=twitclubblocksize):
-                        fd.write(chunk)
-                        requestSizeRead += len(chunk)
-                        print(f'completed {(float(requestSizeRead) / float(shows.urllength) * 100):3.2f}%', end='\r',
-                              flush=True)
-                    print()
-                request.close()
-                shutil.move('twitclubdownload', outputFilename)
+                if not skip_downloaded:
+                    with open('twitclubdownload', 'wb') as fd:
+                        for chunk in request.iter_content(chunk_size=twitclubblocksize):
+                            fd.write(chunk)
+                            requestSizeRead += len(chunk)
+                            print(f'completed {humanize_size(requestSizeRead)} {(float(requestSizeRead) / float(shows.urllength) * 100):3.2f}%                    ', end='\r',
+                                  flush=True)
+                        print()
+                    request.close()
+                    shutil.move('twitclubdownload', outputFilename)
                 data.addfilename(outputFilename)
