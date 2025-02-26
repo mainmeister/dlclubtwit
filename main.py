@@ -9,7 +9,7 @@ from html2txt import converters
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Process command-line arguments.")
-    parser.add_argument("-s", "--skip", action="store_true", help="Skip already downloaded files.")
+    parser.add_argument("-s", "--skip", action="store_true", help="Skip new episodes.")
     args = parser.parse_args()
     return args
 
