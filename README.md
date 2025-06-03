@@ -40,11 +40,45 @@ html2txt
 
 `git clone https://github.com/renesugar/html2txt.git`
 
+python-dotenv (for testing with .env file)
+
+`$ python -m pip install python-dotenv`
+
+Alternatively, you can install all dependencies using the requirements.txt file:
+
+`$ python -m pip install -r requirements.txt`
+
 # **Usage**
 
 The program is a command line python script. There are no command line arguments.
 
 `$python main.py`
+
+# **Testing**
+
+For testing purposes, you can use a `.env` file to set environment variables instead of exporting them in your shell. This is especially useful for running tests without affecting your system environment.
+
+Create a `.env` file in the project root with the following content:
+
+```
+# Required: URL from the TWIT club for your shows
+twitcluburl=https://twit.memberfulcontent.com/rss/9041?auth=your_auth_token_here
+
+# Optional: Block size for downloading (default: 1048576)
+twitclubblocksize=1048576
+
+# Optional: Destination folder for downloads (default: current directory)
+twitclubdestination=./downloads
+```
+
+To use the `.env` file in your tests, use the `python-dotenv` package:
+
+```python
+import dotenv
+dotenv.load_dotenv()
+```
+
+See `test_shows.py` for an example of how to use the `.env` file in tests.
 
 # **Output**
 
@@ -93,7 +127,7 @@ Picks:
 * Ant - I Finally Created an NFT (Why not?)
 * Ant - My Newest Short Film
 * Ant - Photo Pursuit: Stories Behind the Photographs
- 
+
 **Hosts:** [Leo Laporte](https://twit.tv/people/leo-laporte), [Stacey Higginbotham](https://twit.tv/people/stacey-higginbotham), [Jeff Jarvis](https://twit.tv/people/jeff-jarvis), and [Ant Pruitt](https://twit.tv/people/ant-pruitt) 
 
 
@@ -103,7 +137,7 @@ url: https://cdn.twit.tv/members/twig/twig_609/twig_609_h264m_825983-4ced8549.mp
 completed 116.97%
 title: Hands-On Tech Mach-E One Month Review Wed, 28 Apr 2021 18:30:09 PDT
 descrition: Leo Laporte gives his one-month review of Ford's all-electric SUV, the Mustang Mach-E.
- 
+
 **Host:** [Leo Laporte](https://twit.tv/people/leo-laporte) 
 
 Find more products we recommend at[https://www.amazon.com/shop/twitnetcastnetwork](https://www.amazon.com/shop/twitnetcastnetwork)
@@ -126,21 +160,21 @@ descrition: MSFT Q3 FY21 earnings
 * AMD's Datacenter Revenues More Than Doubled in Quarter
 * Alphabet Announces Quarterly Results
 
-  
+
 Fun 
 
 * Microsoft Wants a New Font
 * MyBuild
 * Yusuf Mehdi | Twitter
 
-  
+
 Windows 10 
 
 * Windows 10 Version 20H2 Hits 40 Percent Usage Share
 * Releasing Windows Feature Experience Pack 120.2212.3740.0 to the Beta &amp; Release Preview Channels
 * Microsoft to bring News and Interests feature to Windows 10 users running 1909 and above
 
-  
+
 Microsoft 365 
 
 * Microsoft makes previews available of its non-subscription Office products
@@ -148,7 +182,7 @@ Microsoft 365
 * Viva Learning Enters Public Preview
 * Microsoft Classroom Pen 2 Arrives Next Week
 
-  
+
 Tips and picks 
 
 * Tip of the week: Games with Gold
@@ -156,7 +190,7 @@ Tips and picks
 * Enterprise pick of the week: Cheat sheet: How to join Teams meetings from work conference rooms
 * Codename pick of the week: Alexandria
 * Beer pick of the week: Evil Twin Stay Home (version 3, the Royal Treatment)
- 
+
 **Hosts:** [Leo Laporte](https://twit.tv/people/leo-laporte), [Mary Jo Foley](https://twit.tv/people/mary-jo-foley), and [Paul Thurrott](https://twit.tv/people/paul-thurrott) 
 
 Check out Paul's blog at[thurrott.com](https://www.thurrott.com/) 
